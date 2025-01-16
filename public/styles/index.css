@@ -1,8 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+
 *{
     margin:0;
     padding: 0;
 }
 
-/* body{
+
+body{
     background-color: rgba(39, 39, 39, 1);
-} */
+    font-family: "Rubik Mono One", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+
+}
+
+h1{
+    position: relative;
+    top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 6rem;
+
+    z-index: 5;
+}
+
+h2{
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    top: 15px;
+    z-index: 5;
+}
+
+.circle-container{
+    width:800px;
+    height:800px;
+    
+    margin-top: -150px;
+    margin-bottom: -150px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    position:absolute;
+    left: 50%;
+    transform: translateX(-50%);
+ 
+    background-color:rgba(39, 39, 39, 1);
+    z-index:0;
+  }
+  
+  .circle{
+    background-color:black;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+  }
+  
+  .cc{
+    overflow:hidden
+  
+  }
+  
+  .c3:hover, .c1:hover, .c2:hover, .c4:hover{
+    cursor:pointer;
+  }
+  
+  .c1{
+    background-color:green;
+    transform: translateX(50%) translateY(50%);
+   
+  }
+  
+  .c2{
+    background-color:red;
+    transform: translateX(-50%) translateY(50%)
+  
+  }
+  
+  .c3{
+    background-color:yellow;
+    transform: translateX(50%) translateY(-50%);
+  }
+  
+  .c4{
+    background-color:blue;
+    transform: translateX(-50%) translateY(-50%)
+  }
+  
+  .play-button{
+    width: 40%;
+    height:40%;
+    position:absolute;
+    color:white;
+    background-color:black;
+    border-radius: 50%;
+    border: 20px solid rgba(39, 39, 39, 1);
+    top:50%;
+    left:50%;
+    transform: translateX(-50%) translateY(-50%);
+    font-size: 2rem;
+    overflow:hidden;
+    transition-property: width, height, border;
+    transition-duration: 1s;
+    transition-timing-function:ease-in-out;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  
+  .play-button:hover{
+    cursor:pointer;
+  }
+  .play-button > p{
+    display:block;
+    height:fit-content;
+    padding:0;
+    margin:0;
+  /*   left:50%;
+    top:50%;
+    transform: translateX(-50%) translateY(-50%); */
+  }
+  
+  
+  .gone{
+    width:0;
+    height:0;
+    opacity:0;
+    animation-name:not-visible;
+    animation-duration:1s;
+    border:0px solid rgba(39, 39, 39, 1);
+  }
+
+  .go-back{
+    margin-top: 500px;
+  }
+  
+  @keyframes not-visible{
+    0%{
+      opacity:1;}
+    80%{
+      opacity:1;
+    }
+    90%{
+      opacity:0.1;
+    }
+    100%{
+      opacity:0;
+    }
+  }
+  
