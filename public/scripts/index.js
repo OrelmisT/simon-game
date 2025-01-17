@@ -57,7 +57,6 @@ for(let i = 0; i < 4; i++){
             $('.circle-container').css('background-color','rgba(39, 39, 39, 1)')
             level = 1
             playerClickIndex = 0;
-            $('h1').text('DEAD')
             currentGameState = gameStates.gameOver
 
         }
@@ -71,7 +70,7 @@ playButton.addEventListener('click', async()=>{
     currentGameState = gameStates.animation
     playButton.classList.add('gone')
     panelOrder= []
-    await sleep(260)
+    await sleep(600)
     playRound(1)
 })
 
@@ -84,7 +83,7 @@ goBackButton.addEventListener("click", async()=>{
     playButton.classList.remove('gone')
     currentGameState = gameStates.animation
     await sleep(260)
-    $('h1').text('SIMON')
+    $('h2').text('THE MEOMORY GAME')
     panelOrder = []
     playerClickIndex = 0
     roundNum = 1
@@ -106,7 +105,7 @@ const chooseRandomPanel = ()=>{
 //play round next
 const playRound = async (level)=>{
     currentGameState = gameStates.animation
-    $('h1').text(`Level ${level}`)
+    $('h2').text(`Level ${level}`)
     const panelNum = chooseRandomPanel()
     panelOrder.push(panelNum)
     for(let i = 0; i < level; i ++){
