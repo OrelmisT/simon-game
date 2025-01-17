@@ -50,7 +50,8 @@ for(let i = 0; i < 4; i++){
             $('.circle-container').css('background-color','rgba(39, 39, 39, 1)')
             level = 1
             playerClickIndex = 0;
-            $('h1').text('You are Die')
+            $('h1').text('DEAD')
+            currentGameState = gameStates.gameOver
 
         }
         
@@ -69,8 +70,20 @@ playButton.addEventListener('click', async()=>{
 
 const goBackButton = document.querySelector('.go-back')
 
-goBackButton.addEventListener("click", ()=>{
-  playButton.classList.remove('gone')
+goBackButton.addEventListener("click", async()=>{
+    if(currentGameState !== gameStates.gameOver){
+        return
+    }
+    playButton.classList.remove('gone')
+    currentGameState = gameStates.animation
+    await sleep(260)
+    $('h1').text('SIMON')
+    panelOrder = []
+    playerClickIndex = 0
+    roundNum = 1
+    currentGameState = gameStates.titleScreen
+
+
 })
 
 function sleep(ms) {
