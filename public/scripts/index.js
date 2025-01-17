@@ -13,11 +13,15 @@ const sounds = [
 
 ]
 
+
 const playAudio = (url)=>{
     const audio = new Audio(url)
     audio.play()
 }
 
+
+const highscore = localStorage.getItem('highscore') || 0
+$('#highscore').text(`Highscore: ${highscore}`)
 
 
 for(let i = 0; i < 4; i++){
@@ -25,20 +29,21 @@ for(let i = 0; i < 4; i++){
         if(currentGameState != gameStates.play){
             return
         }
+        //Clicked on correct panel
         if(i + 1 === panelOrder[playerClickIndex]){
             $(`.c${i + 1}`).addClass('selected')
             playAudio(sounds[panelOrder[playerClickIndex] - 1])
-            // const audio = sounds[panelOrder[playerClickIndex] - 1]
-            // audio.currentTime = 0
-            // audio.play()
             currentGameState = gameStates.animation
             await sleep(280)
             $(`.c${i + 1}`).removeClass('selected')
             playerClickIndex += 1
             currentGameState = gameStates.play
             await sleep(280)
-
             if(playerClickIndex === panelOrder.length){
+                if(roundNum > highscore){
+                    $('#highscore').text(`Highscore: ${roundNum}`)
+                    localStorage.setItem('highscore', roundNum)
+                }
                 roundNum += 1;
                 playerClickIndex = 0
                 playRound(roundNum)
@@ -46,6 +51,7 @@ for(let i = 0; i < 4; i++){
             }
 
         }
+        //clicked on incorrect panel
         else{
             currentGameState = gameStates.animation
             $('body').css('background-color', 'red')
@@ -55,6 +61,7 @@ for(let i = 0; i < 4; i++){
             await sleep(400)
             $('body').css('background-color', 'rgba(39, 39, 39, 1)')
             $('.circle-container').css('background-color','rgba(39, 39, 39, 1)')
+            $('.fail-buttons').css('display', 'flex')
             level = 1
             playerClickIndex = 0;
             currentGameState = gameStates.gameOver
@@ -88,13 +95,15 @@ goBackButton.addEventListener("click", async()=>{
     playerClickIndex = 0
     roundNum = 1
     currentGameState = gameStates.titleScreen
+    $('.fail-buttons').css('display', 'none')
 
 
 })
 
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
 
 const chooseRandomPanel = ()=>{
     return Math.floor(Math.random() *4) + 1 
@@ -109,14 +118,24 @@ const playRound = async (level)=>{
     const panelNum = chooseRandomPanel()
     panelOrder.push(panelNum)
     for(let i = 0; i < level; i ++){
-        await sleep(280)
+        await sleep(250)
         $(`.c${panelOrder[i]}`).addClass('selected')
         playAudio(sounds[panelOrder[i] - 1])
         // const audio = sounds[panelOrder[i] - 1]
         // audio.currentTime = 0
         // audio.play()
-        await sleep(280)
+        await sleep(250)
         $(`.c${panelOrder[i]}`).removeClass('selected')
     }
     currentGameState = gameStates.play
 }
+
+const retryButton = $('.retry')
+retryButton.on('click', ()=>{
+    panelOrder = []
+    playerClickIndex = 0
+    roundNum = 1
+    sleep(100)
+    $('.fail-buttons').css('display', 'none')
+    playRound(1)
+})
