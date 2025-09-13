@@ -29,6 +29,19 @@
         </button>
       </div>
       
+
+      <div class="navigation-buttons">
+        <button class="leaderboard">LEADERBOARD</button>
+
+        <% if(locals.username){ %>
+          <button class="logout">SIGN OUT</button>
+          <%} else{%>
+            <button class="login">SIGN IN</button>
+
+
+          <%}%>
+
+      </div>
       <div class="fail-buttons">
           <button class="retry">RETRY</button>
           <button class="go-back">Quit</button>

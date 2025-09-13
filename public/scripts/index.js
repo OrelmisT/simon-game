@@ -74,6 +74,8 @@ for(let i = 0; i < 4; i++){
 const playButton = document.querySelector('.play-button')
 
 playButton.addEventListener('click', async()=>{
+    $('.navigation-buttons').css('display', 'none')
+    // document.querySelector('.navigation-buttons').style.display = 'none'
     currentGameState = gameStates.animation
     playButton.classList.add('gone')
     panelOrder= []
@@ -91,6 +93,7 @@ goBackButton.addEventListener("click", async()=>{
     currentGameState = gameStates.animation
     await sleep(260)
     $('h2').text('THE MEOMORY GAME')
+    $('.navigation-buttons').css('display', 'flex')
     panelOrder = []
     playerClickIndex = 0
     roundNum = 1
@@ -138,4 +141,15 @@ retryButton.on('click', ()=>{
     sleep(100)
     $('.fail-buttons').css('display', 'none')
     playRound(1)
+})
+
+
+// sign up button click
+$('.login').click(()=>{
+    window.location.href = '/sign_in'
+})
+
+
+$('.leaderboard').click(() => {
+    window.location.href = '/leaderboard'
 })
