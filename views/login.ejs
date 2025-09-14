@@ -12,13 +12,14 @@
         <p>Home</p>
 
     </div>
-    <form method="post">
+    <form method="post" action="/sign_in">
         <h1>SIGN IN</h1>
 
-        <input placeholder="Email" type="email">
-        <input placeholder="Password" type="password">
+        <input placeholder="Email" name="email" required type="email">
+        <input placeholder="Password" name="password" required type="password">
         <button type="submit">SIGN IN</button>
         <a>Forgot password?</a>
+        <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
     </form>
 
 

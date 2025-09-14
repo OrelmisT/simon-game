@@ -35,7 +35,11 @@
 
         <% if(locals.username){ %>
           <button class="logout">SIGN OUT</button>
+          <button style="display: none;" class="login">SIGN IN</button>
+
           <%} else{%>
+
+            <button class="logout" style="display: none;">SIGN OUT</button>
             <button class="login">SIGN IN</button>
 
 

@@ -53,6 +53,9 @@ for(let i = 0; i < 4; i++){
         }
         //clicked on incorrect panel
         else{
+           
+            fetch('/submit_score', {method:"POST", body:JSON.stringify({"score": roundNum - 1}), headers:{"Content-Type":'application/json'}, credentials:'include'})
+            
             currentGameState = gameStates.animation
             $('body').css('background-color', 'red')
             $('.circle-container').css('background-color', 'red')
@@ -152,4 +155,14 @@ $('.login').click(()=>{
 
 $('.leaderboard').click(() => {
     window.location.href = '/leaderboard'
+})
+
+
+$('.logout').click(async() => {
+    const response = await fetch('/sign_out', {method:"POST", credentials:'include'})
+    if(response.status === 204){
+        $('.logout').css('display', 'none')
+        $('.login').css('display', 'block')
+    }
+    
 })

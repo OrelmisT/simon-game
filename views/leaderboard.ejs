@@ -12,6 +12,7 @@
     <div class="leaderboardContainer">
         <h1>LEADERBOARD</h1>
         <div id="leaderboard">
+
             <div class="row">
                 <div class="col1">
                     <p>
@@ -24,50 +25,27 @@
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col1">
-                    <p>Player1<p>
+            <% for(let i=0; i < userScores.length; i++){%>
+                <div class="row">
+                    <div class="col1">
+                        <p><%= userScores[i].username %><p>
+                    </div>
+                    <div class="col2">
+                        <p><%= userScores[i].score %></p>
+                    </div>
                 </div>
-                <div class="col2">
-                    <p>8</p>
+                
+            <%} for(let e=0; e < 5 - userScores.length; e++){%>
+                <div class="row">
+                    <div class="col1">
+                        <p>-<p>
+                    </div>
+                    <div class="col2">
+                        <p>-</p>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <p>
-                        Player2
-                    </p>
-                 </div>
-                <div class="col2">
-                    <p>7</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <p>Player3</p>
-                </div>
-                <div class="col2">
-                    <p>7</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <p>Player4</p>
-                </div>
-                <div class="col2">
-                    <p>5</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <p>Player5</p>
-                </div>
-                <div class="col2">
-                    <p>4</p>
-                </div>
-            </div>
-
-
+            <%}%>
+                    
         </div>
         <button id="back-home">BACK TO HOME</button>
 
