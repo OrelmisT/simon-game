@@ -7,6 +7,13 @@ import bcrypt from 'bcrypt'
 import config from './config.js'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
+import { RedisStore } from 'connect-redis'
+import { createClient } from 'redis'
+
+
+
+const redisClient = createClient({url:config.REDIS_CONNECTION_STRING})
+await redisClient.connect()
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -17,6 +24,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({
+    store: new RedisStore({client: redisClient}),
     secret: config.SESSION_KEY,
     resave: false,
     rolling: true,
@@ -47,14 +55,10 @@ app.post('/sign_up', async (req, res) =>{
         return res.render('signup.ejs', {"error_message": "An account with this username or email already exists"})
     }
 
-    console.log('account does not already exist')
     try{
         // create the new account
-        console.log('wepa')
-        console.log(`password: ${password}`)
-        console.log(`saltRounds: ${config.SALT_ROUNDS}`)
+        
         const encryptedPassword  =  await bcrypt.hash(password, parseInt(config.SALT_ROUNDS))
-        console.log(`encrypted password: ${encryptedPassword}`)
         const response = await db.query('insert into accounts (username, email, password) values ($1, $2, $3) returning *', [username, email, encryptedPassword])
         const newUser = response.rows[0]
         req.session.user = {username, email, id: newUser.id}
@@ -82,8 +86,6 @@ app.post('/sign_in', async (req, res) => {
 
     const {email, password} = req.body
 
-    console.log(`email: ${email}`)
-    console.log(`password: ${password}`)
    
 
     const response = await db.query('select * from accounts where email = $1', [email])
@@ -111,9 +113,6 @@ app.get('/leaderboard', async (req, res) => {
 
 
     const userScores = await db.query('select accounts.username as username, user_scores.score as score from accounts join user_scores on accounts.id = user_scores.user_id order by user_scores.score desc limit 5')
-
-    console.log(userScores.rows)
-
 
     res.render('leaderboard.ejs', {userScores:userScores.rows})
 })
@@ -162,12 +161,15 @@ app.post('/submit_score', async (req, res) => {
 
 app.listen(config.PORT, async () => {
 
+   
+
     // setup database tables if they don't exist
     const usersTableExists = await db.query("select exists(select * from information_schema.tables where table_name = 'accounts') ")
     if(!usersTableExists.rows[0].exists){
         console.log("Creating accounts table")
         await db.query("create table accounts (id serial primary key, username varchar(255) unique not null, email varchar(255) unique not null, password varchar(255) not null)")
     }
+
 
     const userScoreTableExists = await db.query("select exists(select * from information_schema.tables where table_name = 'user_scores')")
     if (!userScoreTableExists.rows[0].exists){
