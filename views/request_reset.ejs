@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/request_reset.css" >
+    <link rel="icon" type="image/png" href="./simon-logo.png">
+</head>
+<body>
+    <div class="back-to-home-nav">
+        <i class="fa-solid fa-arrow-left"></i>
+        <p>Home</p>
+
+    </div>
+   
+
+        <form method="post" action="/password_reset_request">
+            <h1>Reset Password</h1>
+            
+            <input placeholder="Email" name="email" required type="email">
+            <button type="submit">RESET</button>
+            <p>Remember Passoword? <a href="/sign_in">Sign In</a></p>
+            
+            
+            <% if (locals.msg){%>
+                <div class="status_msg success">
+                    <div class="status_bar">
+                    </div>
+
+                    <p>
+                        <%= msg %>
+                    </p>
+                </div>
+            
+            <%} else if(locals.error_msg){%>
+                <div class="status_msg error">
+                    <div class="status_bar"></div>
+                    <p><%= error_msg %></p>
+                </div>
+        
+            <%}%>
+
+        </form>
+   
+
+
+
+
+    
+    <script src="https://kit.fontawesome.com/3aef64bd14.js" crossorigin="anonymous"></script>  
+    <script src="./scripts/request_reset.js"></script>  
+</body>
+</html>

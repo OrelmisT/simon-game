@@ -2,18 +2,15 @@ import express from 'express'
 import cors from 'cors'
 import path, {dirname} from 'path'
 import { fileURLToPath } from 'url'
-import { Client } from 'pg'
 import bcrypt from 'bcrypt'
-import config from './config.js'
+import config from './config/config.js'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import { RedisStore } from 'connect-redis'
-import { createClient } from 'redis'
-
-
-
-const redisClient = createClient({url:config.REDIS_CONNECTION_STRING})
-await redisClient.connect()
+import db from './config/db.js'
+import redisClient from './config/redis.js'
+import mailer from './config/nodemailer.js'
+import jwt from 'jsonwebtoken'
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -33,11 +30,6 @@ app.use(session({
 }))
 
 
-
-const db = new Client({
-    connectionString:config.DB_CONNECTION_STRING
-})
-db.connect()
 
 app.get('/', (req, res) =>{
 
@@ -156,6 +148,120 @@ app.post('/submit_score', async (req, res) => {
 
 })
 
+
+
+app.get('/password_reset', (req, res) => {
+    
+    const token = req.query.token
+    try{
+
+        const decoded = jwt.verify(token, config.NODE_MAILER_SECRET)
+        const email = decoded.email
+        res.render('reset.ejs', {email})
+
+        
+    }catch(e){
+        res.render('reset.ejs', {invalid_link_msg:'Invalid or expired reset link.'})
+    }
+
+
+})
+
+
+app.post('/password_reset', async (req, res) =>{
+    
+    const {email, password} = req.body
+
+    try{
+
+
+        const encryptedPassword =  await bcrypt.hash(password, config.SALT_ROUNDS)
+        await db.query('update accounts set password = $1 where email = $2', [encryptedPassword, email])
+        return res.render('reset.ejs', {email, msg:"Your password was successfully reset. You may now login in with your new credentials."})
+
+
+    }catch(e){
+        console.log(e)
+        return res.render('reset.ejs', {email, error_msg:"Something went wrong. Try again later."})
+
+    }
+
+
+})
+
+
+app.get('/password_reset_request', (req, res) =>{
+
+    res.render('request_reset.ejs')
+})
+
+
+app.post('/password_reset_request', async (req, res) =>{
+
+    const email = req.body.email
+    
+    // verify that account with email exists
+    const response = await db.query('select * from accounts where email = $1', [req.body.email])
+    if(response.rowCount === 0){
+        return res.render('request_reset.ejs', {"msg":"A reset link has been sent to your inbox if an account with this email exists"})
+    }
+
+    // create reset token
+    const token = jwt.sign({email}, config.NODE_MAILER_SECRET, {expiresIn:'15m'})
+
+
+    try{
+
+        await mailer.sendMail({
+  from: `"Simon Game Clone" <${config.NODE_MAILER_EMAIL}>`,
+  to: email,
+  subject: "Password Reset Link",
+  html: `
+    <div style="background-color:#222; color:white; font-family: 'Arial Black', Gadget, sans-serif; padding:30px; text-align:center;">
+        <!-- Logo spot -->
+        <div style="margin-bottom:20px;">
+        <img src="cid:simonlogo" alt="Simon Logo" style="max-width:120px;">
+        </div>
+
+        <h1 style="font-size:32px; letter-spacing:2px; margin-bottom:10px;">SIMON</h1>
+        <p style="font-size:14px; color:#ccc; margin-top:-10px; margin-bottom:30px;">The Memory Game</p>
+
+        <h2 style="font-size:22px; margin-bottom:20px;">Password Reset</h2>
+        <p style="font-size:16px; margin-bottom:30px;">Click the button below to reset your password:</p>
+
+        <a href="${config.APP_DOMAIN}/password_reset?token=${token}" style="display:inline-block; background:linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ffff00); 
+        color:#fff; text-decoration:none; font-weight:bold; padding:15px 30px; border-radius:8px;">
+        Reset Password
+        </a>
+
+        <p style="margin-top:40px; font-size:12px; color:#777;">
+        If you didn’t request this, you can safely ignore this email.
+        </p>
+
+        <p style="margin-top:20px; font-size:11px; color:#555;">
+        &copy; ${new Date().getFullYear()} Simon Game Clone
+        </p>
+    </div>
+    `,
+    attachments: [
+        {
+        filename: "logo.png",
+        path: __dirname + "/public/simon-logo.png", // adjust path to your logo in project root
+        cid: "simonlogo" // same as in the <img src="cid:simonlogo">
+        }
+    ]
+    })
+
+
+        res.render('request_reset.ejs', {"msg": "A reset link has been sent to your inbox if an account with this email exists."})
+        
+    }catch(error){
+        console.log(error)
+        return res.render('request_reset.ejs', {"error_msg": "Something went wrong while creating your reset link. Please try again later. "})
+    }
+    
+
+})
 
 
 
