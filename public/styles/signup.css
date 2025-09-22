@@ -91,3 +91,42 @@ a{
     all:unset;
     text-decoration: underline;
 }
+
+
+
+.status_msg{
+    position: absolute;
+    bottom: -4rem;
+    display: flex;
+    flex-direction: row;
+    background-color: #151515;
+}
+.status_msg p{
+    padding: 0.9rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.status_bar{
+    height: inherit;
+    width: 2rem;
+}
+
+
+.error .status_bar{
+    background-color: red;
+    
+}
+
+
+@media (max-width:450px) {
+    .status_msg{
+        max-width: 80vw;
+        font-size: 0.9rem;
+    }
+
+    .status_msg p{
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

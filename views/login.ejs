@@ -21,6 +21,13 @@
         <button type="submit">SIGN IN</button>
         <a href="/password_reset_request">Forgot password?</a>
         <p>Don't have an account? <a href="/sign_up">Sign Up</a></p>
+
+        <%if(locals.error_message){%>
+            <div class="status_msg error">
+                    <div class="status_bar"></div>
+                    <p><%= error_message %></p>
+            </div>
+        <%}%>
     </form>
 
 

@@ -82,7 +82,7 @@ app.post('/sign_in', async (req, res) => {
 
     const response = await db.query('select * from accounts where email = $1', [email])
     if(response.rowCount == 0 || !(await bcrypt.compare(password, response.rows[0].password))){
-        res.render('login.ejs', {'error_message':'Incorrect email or password'})
+        res.render('login.ejs', {'error_message':'Incorrect email or password. Try again.'})
         return
     } 
 
