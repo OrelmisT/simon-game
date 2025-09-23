@@ -20,8 +20,6 @@ const playAudio = (url)=>{
 }
 
 
-const highscore = localStorage.getItem('highscore') || 0
-$('#highscore').text(`Highscore: ${highscore}`)
 
 
 for(let i = 0; i < 4; i++){
@@ -40,10 +38,6 @@ for(let i = 0; i < 4; i++){
             currentGameState = gameStates.play
             await sleep(280)
             if(playerClickIndex === panelOrder.length){
-                if(roundNum > highscore){
-                    $('#highscore').text(`Highscore: ${roundNum}`)
-                    localStorage.setItem('highscore', roundNum)
-                }
                 roundNum += 1;
                 playerClickIndex = 0
                 playRound(roundNum)
