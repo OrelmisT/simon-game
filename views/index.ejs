@@ -8,55 +8,58 @@
     <link rel="icon" type="image/png" href="./simon-logo.png">
 </head>
 <body>
+  <div id="page-content">
+
     <h1>SIMON</h1>
     <h2>THE MEMORY GAME</h2>
     <div class="circle-container">
-        <div class="cc">
-          <div class=' c1 circle'></div>
-        </div>
-        <div class=" cc">
-          <div class='c2 circle'></div>
-        </div>
-        <div class="cc" >
-          <div class='c3 circle'></div>
-        </div>
-        <div class=" cc">
-          <div class=' c4 circle'></div>
-        </div>
-        <button class="play-button">
-          <p>
+      <div class="cc">
+        <div class=' c1 circle'></div>
+      </div>
+      <div class=" cc">
+        <div class='c2 circle'></div>
+      </div>
+      <div class="cc" >
+        <div class='c3 circle'></div>
+      </div>
+      <div class=" cc">
+        <div class=' c4 circle'></div>
+      </div>
+      <button class="play-button">
+        <p>
           PLAY
-          </p>
-        </button>
-      </div>
+        </p>
+      </button>
+    </div>
+    
+    
+    <div class="navigation-buttons">
+      <button class="leaderboard">LEADERBOARD</button>
       
-
-      <div class="navigation-buttons">
-        <button class="leaderboard">LEADERBOARD</button>
-
-        <% if(locals.username){ %>
-          <button class="logout">SIGN OUT</button>
-          <button style="display: none;" class="login">SIGN IN</button>
-
-          <%} else{%>
-
-            <button class="logout" style="display: none;">SIGN OUT</button>
-            <button class="login">SIGN IN</button>
-
-
+      <% if(locals.username){ %>
+        <button class="logout">SIGN OUT</button>
+        <button style="display: none;" class="login">SIGN IN</button>
+        
+        <%} else{%>
+          
+          <button class="logout" style="display: none;">SIGN OUT</button>
+          <button class="login">SIGN IN</button>
+          
+          
           <%}%>
-
-      </div>
-      <div class="fail-buttons">
+          
+        </div>
+        <div class="fail-buttons">
           <button class="retry">RETRY</button>
           <button class="go-back">Quit</button>
         </div>
-
-    <script
-    src="https://code.jquery.com/jquery-3.7.1.js"
-    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./scripts/index.js"></script>
+        
+      </div>
+        <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="./scripts/index.js"></script>
 </body>
 </html>

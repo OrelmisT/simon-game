@@ -73,6 +73,7 @@ const playButton = document.querySelector('.play-button')
 playButton.addEventListener('click', async()=>{
     $('.navigation-buttons').css('display', 'none')
     // document.querySelector('.navigation-buttons').style.display = 'none'
+    $('.fail-buttons').css('display', 'flex')
     currentGameState = gameStates.animation
     playButton.classList.add('gone')
     panelOrder= []
@@ -83,9 +84,9 @@ playButton.addEventListener('click', async()=>{
 const goBackButton = document.querySelector('.go-back')
 
 goBackButton.addEventListener("click", async()=>{
-    if(currentGameState !== gameStates.gameOver){
-        return
-    }
+    // if(currentGameState !== gameStates.gameOver){
+    //     return
+    // }
     playButton.classList.remove('gone')
     currentGameState = gameStates.animation
     await sleep(260)
@@ -136,7 +137,6 @@ retryButton.on('click', ()=>{
     playerClickIndex = 0
     roundNum = 1
     sleep(100)
-    $('.fail-buttons').css('display', 'none')
     playRound(1)
 })
 
