@@ -5,10 +5,10 @@
 }
 
 .leaderboardContainer{
-    position: absolute;
+    /* position: absolute;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%); */
     /* background-color: red; */
     width: 30rem;
     padding:3rem;
@@ -126,4 +126,31 @@ button:hover{
     background-color: rgba(255, 255, 255, 0.234);
     transition: all 0.3s ease-in-out;
     transform: scale(1.1);
+}
+
+
+#page-content{
+    display: flex;
+    width: 100dvw;
+    height: 100dvh;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+@media (max-width:450px) {
+
+    h1{
+        font-size: 2.2rem;
+    }
+
+    .col1, .col2{
+        font-size: 1.3rem;
+    }
+
+    .col1{
+        padding-left: 2.2rem;
+    }
+    
 }
