@@ -12,14 +12,18 @@ const sounds = [
 "../audio/error.mp3"
 
 ]
+const soundObjects = sounds.map(sound => new Audio(sound))
 
 
-const playAudio = (url)=>{
-    const audio = new Audio(url)
-    audio.play()
+const playAudio = (index)=>{
+
+    // const url = sounds[index]
+    // const audio = new Audio(url)
+    // audio.play()
+    soundObjects[index].pause()
+    soundObjects[index].currentTime = 0
+    soundObjects[index].play()
 }
-
-
 
 
 for(let i = 0; i < 4; i++){
@@ -29,31 +33,33 @@ for(let i = 0; i < 4; i++){
         }
         //Clicked on correct panel
         if(i + 1 === panelOrder[playerClickIndex]){
-            $(`.c${i + 1}`).addClass('selected')
-            playAudio(sounds[panelOrder[playerClickIndex] - 1])
             currentGameState = gameStates.animation
+            $(`.c${i + 1}`).addClass('selected')
+            playAudio(panelOrder[playerClickIndex] - 1)
             await sleep(280)
             $(`.c${i + 1}`).removeClass('selected')
             playerClickIndex += 1
-            currentGameState = gameStates.play
-            await sleep(280)
+            // currentGameState = gameStates.play
+            // await sleep(200)
             if(playerClickIndex === panelOrder.length){
                 roundNum += 1;
                 playerClickIndex = 0
                 playRound(roundNum)
 
+            }else{
+                currentGameState = gameStates.play
             }
 
         }
         //clicked on incorrect panel
         else{
            
+            currentGameState = gameStates.animation
             fetch('/submit_score', {method:"POST", body:JSON.stringify({"score": roundNum - 1}), headers:{"Content-Type":'application/json'}, credentials:'include'})
             
-            currentGameState = gameStates.animation
+            playAudio(4)
             $('body').css('background-color', 'red')
             $('.circle-container').css('background-color', 'red')
-            playAudio(sounds[4])
             // sounds[4].play()
             await sleep(400)
             $('body').css('background-color', 'rgba(39, 39, 39, 1)')
@@ -121,7 +127,7 @@ const playRound = async (level)=>{
     for(let i = 0; i < level; i ++){
         await sleep(250)
         $(`.c${panelOrder[i]}`).addClass('selected')
-        playAudio(sounds[panelOrder[i] - 1])
+        playAudio(panelOrder[i] - 1)
         // const audio = sounds[panelOrder[i] - 1]
         // audio.currentTime = 0
         // audio.play()
