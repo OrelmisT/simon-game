@@ -112,6 +112,16 @@ const chooseRandomPanel = ()=>{
 
 //play round next
 const playRound = async (level)=>{
+        // disable buttons while animation is playing
+    $('.fail-buttons button').addClass('disabled')
+    $('.fail-buttons button').prop('disabled', true)
+
+
+    if(level !== 1){
+        // separation between user input and next round
+        await sleep(250)
+    }
+
     currentGameState = gameStates.animation
     $('h2').text(`Level ${level}`)
     const panelNum = chooseRandomPanel()
@@ -124,7 +134,12 @@ const playRound = async (level)=>{
         $(`.c${panelOrder[i]}`).removeClass('selected')
     }
     currentGameState = gameStates.play
+    
+    // enable disabled buttons
+    $('.fail-buttons button').removeClass('disabled')
+    $('.fail-buttons button').prop('disabled', false)
 }
+
 
 const retryButton = $('.retry')
 retryButton.on('click', ()=>{
