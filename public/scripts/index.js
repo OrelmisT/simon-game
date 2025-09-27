@@ -16,9 +16,12 @@ const soundObjects = sounds.map(sound => new Audio(sound))
 
 
 const playAudio = (index)=>{
-    soundObjects[index].pause()
-    soundObjects[index].currentTime = 0
-    soundObjects[index].play()
+    // soundObjects[index].pause()
+    // soundObjects[index].currentTime = 0
+    // soundObjects[index].play()
+    const sound = soundObjects[index].cloneNode()
+    sound.play()
+
 }
 
 
