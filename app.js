@@ -106,7 +106,18 @@ app.get('/leaderboard', async (req, res) => {
 
     const userScores = await db.query('select accounts.username as username, user_scores.score as score from accounts join user_scores on accounts.id = user_scores.user_id order by user_scores.score desc limit 5')
 
-    res.render('leaderboard.ejs', {userScores:userScores.rows})
+    if(req.session.user){
+        const score_res = await db.query('select * from user_scores where user_id = $1', [req.session.user.id])
+        if(score_res.rowCount > 0){
+            const personalBest = score_res.rows[0].score
+            return res.render('leaderboard.ejs', {userScores:userScores.rows, personalBest})
+        }
+        else{
+             return res.render('leaderboard.ejs', {userScores:userScores.rows, personalBest:0})
+        }
+    }
+
+    return res.render('leaderboard.ejs', {userScores:userScores.rows})
 })
 
 
