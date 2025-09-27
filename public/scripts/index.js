@@ -16,10 +16,6 @@ const soundObjects = sounds.map(sound => new Audio(sound))
 
 
 const playAudio = (index)=>{
-
-    // const url = sounds[index]
-    // const audio = new Audio(url)
-    // audio.play()
     soundObjects[index].pause()
     soundObjects[index].currentTime = 0
     soundObjects[index].play()
@@ -39,8 +35,6 @@ for(let i = 0; i < 4; i++){
             await sleep(280)
             $(`.c${i + 1}`).removeClass('selected')
             playerClickIndex += 1
-            // currentGameState = gameStates.play
-            // await sleep(200)
             if(playerClickIndex === panelOrder.length){
                 roundNum += 1;
                 playerClickIndex = 0
@@ -60,7 +54,6 @@ for(let i = 0; i < 4; i++){
             playAudio(4)
             $('body').css('background-color', 'red')
             $('.circle-container').css('background-color', 'red')
-            // sounds[4].play()
             await sleep(400)
             $('body').css('background-color', 'rgba(39, 39, 39, 1)')
             $('.circle-container').css('background-color','rgba(39, 39, 39, 1)')
@@ -78,7 +71,6 @@ const playButton = document.querySelector('.play-button')
 
 playButton.addEventListener('click', async()=>{
     $('.navigation-buttons').css('display', 'none')
-    // document.querySelector('.navigation-buttons').style.display = 'none'
     $('.fail-buttons').css('display', 'flex')
     currentGameState = gameStates.animation
     playButton.classList.add('gone')
@@ -90,9 +82,6 @@ playButton.addEventListener('click', async()=>{
 const goBackButton = document.querySelector('.go-back')
 
 goBackButton.addEventListener("click", async()=>{
-    // if(currentGameState !== gameStates.gameOver){
-    //     return
-    // }
     playButton.classList.remove('gone')
     currentGameState = gameStates.animation
     await sleep(260)
@@ -128,9 +117,6 @@ const playRound = async (level)=>{
         await sleep(250)
         $(`.c${panelOrder[i]}`).addClass('selected')
         playAudio(panelOrder[i] - 1)
-        // const audio = sounds[panelOrder[i] - 1]
-        // audio.currentTime = 0
-        // audio.play()
         await sleep(250)
         $(`.c${panelOrder[i]}`).removeClass('selected')
     }
