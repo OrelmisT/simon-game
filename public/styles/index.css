@@ -295,13 +295,24 @@ h2{
 
 
 .circle-container{
-    max-width: 70%;
-    flex-grow: 2;
-    min-height: 0;
+    /* max-width: 70%; */
+
+
+    width: 18rem;
+    /* max-width: 70%; */
+    height: 18rem;
+    min-height: 18rem;
+    min-width: 18rem;
+    max-height: 18rem;
+    max-width: 18rem;
+    
+
+    /* flex-grow: 2; */
+    /* min-height: 0; */
   
-    height: auto;
-    width: auto;
-    aspect-ratio: 1 / 1;
+    /* height: auto; */
+    /* width: auto; */
+    /* aspect-ratio: 1 / 1 !important; */
   }
 
 
